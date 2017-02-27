@@ -4,7 +4,7 @@ This is an microphone
 Reference to
 -------------
 
-1. [aduino with XC-4438][id] : Product Page
+1. [aduino with XC-4438][id]
 [id]: https://www.jaycar.com.au/audio-matrix-spectrum
 
 2. [VegetableAvenger BBBIOlib][id]
