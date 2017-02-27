@@ -7,17 +7,17 @@
 I used i2c_2 interface on the BBB.  
 ![Alt text] (/adc/XC-4438_microphone/beaglebone-black-pinout.jpg)  
 
-1. add below code to the am335x-bone-common.dtsi :  
-  
-	/* Pins 19 (SCL) and 20 (SDL) of connector P9 */  
-	i2c2_pins: pinmux_i2c2_pins {  
-		pinctrl-single,pins = <  
-			0x178 (PIN_INPUT_PULLUP | MUX_MODE3)	/* uart1_ctsn.i2c2_sda */  
-			0x17c (PIN_INPUT_PULLUP | MUX_MODE3)	/* uart1_rtsn.i2c2_scl */  
-		>;  
-	};  
+1.add below code to the am335x-bone-common.dtsi :  
 
-2. add below code to the am335x-boneblack.dts :  
+	/* Pins 19 (SCL) and 20 (SDL) of connector P9 */
+	i2c2_pins: pinmux_i2c2_pins {
+		pinctrl-single,pins = <
+			0x178 (PIN_INPUT_PULLUP | MUX_MODE3)	/* uart1_ctsn.i2c2_sda */
+			0x17c (PIN_INPUT_PULLUP | MUX_MODE3)	/* uart1_rtsn.i2c2_scl */
+		>;
+	};
+  
+2.add below code to the am335x-boneblack.dts :  
 
 	&i2c2 {
 		status = "okay";
@@ -30,7 +30,7 @@ I used i2c_2 interface on the BBB.
 			compatible = "maxim,ds3231";
 			reg = <0x68>;
 		};	
-	};
+	};  
 
 
 ##3231 Driver.  
