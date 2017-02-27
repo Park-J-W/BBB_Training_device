@@ -7,17 +7,17 @@
 I used i2c_2 interface on the BBB.  
 ![Alt text] (/adc/XC-4438_microphone/beaglebone-black-pinout.jpg)  
 
-add below code to the am335x-bone-common.dtsi :
+1. add below code to the am335x-bone-common.dtsi :  
+  
+	/* Pins 19 (SCL) and 20 (SDL) of connector P9 */  
+	i2c2_pins: pinmux_i2c2_pins {  
+		pinctrl-single,pins = <  
+			0x178 (PIN_INPUT_PULLUP | MUX_MODE3)	/* uart1_ctsn.i2c2_sda */  
+			0x17c (PIN_INPUT_PULLUP | MUX_MODE3)	/* uart1_rtsn.i2c2_scl */  
+		>;  
+	};  
 
-	/* Pins 19 (SCL) and 20 (SDL) of connector P9 */
-	i2c2_pins: pinmux_i2c2_pins {
-		pinctrl-single,pins = <
-			0x178 (PIN_INPUT_PULLUP | MUX_MODE3)	/* uart1_ctsn.i2c2_sda */
-			0x17c (PIN_INPUT_PULLUP | MUX_MODE3)	/* uart1_rtsn.i2c2_scl */
-		>;
-	};
-
-add below code to the am335x-boneblack.dts :  
+2. add below code to the am335x-boneblack.dts :  
 
 	&i2c2 {
 		status = "okay";
@@ -32,6 +32,7 @@ add below code to the am335x-boneblack.dts :
 		};	
 	};
 
+
 ##3231 Driver.  
 Rtc-3231 driver file is in the driver/rtc/rtc-ds1307.c  
 Find the id of ds3231 on the driver file. If found that, don't need to modify or add code.  
@@ -44,7 +45,15 @@ If not, add the following line to the ds1307_id table.
 3. search the Real Time Clock by inputing the RTC_DRV_DS1307 on the search box.
 4. input the number corresponding to Real Time Clock.
 5. and then, hit the space bar until the represents to "*".
-6. save the configure.  
+6. save the configure, compile, download image and powerup device.  
   
 ###Module load.  
-1. 
+1. run the above 1~4.  
+2. and then, hit the space bar until the represents to "M".  
+3. save the configure.  
+4. save the configure, compile, download image and powerup device.
+
+
+
+
+
