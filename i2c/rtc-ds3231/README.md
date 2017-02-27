@@ -36,6 +36,10 @@ I used i2c_2 interface on the BBB.
 4. $ dtc -I fs /proc/device-tree -> check device tree.
 4. i2cdetect -y -r 2 -> check i2c_2 device.
 
+####good reference  
+1. [blog.fraggod.net][blog.fraggod.net link] : 
+[blog.fraggod.net link]: http://blog.fraggod.net/2015/11/25/replacing-built-in-rtc-with-i2c-battery-backed-one-on-beaglebone-black-from-boot.html
+
 ##ds3231 Driver.  
 Rtc-3231 driver file is in the driver/rtc/rtc-ds1307.c  
 Find the id of ds3231 on the driver file. If found that, don't need to modify or add code.  
@@ -64,3 +68,7 @@ If not, add the following line to the ds1307_id table.
 4. check the RTC time by using hwclock command.  
 5. reboot  
 6. check the RTC time by using hwclock command.  
+
+####good reference  
+1. [Adding a Real Time Clock to BeagleBone Black][Adding a Real Time Clock to BeagleBone Black link] : 
+[Adding a Real Time Clock to BeagleBone Black link]: https://learn.adafruit.com/adding-a-real-time-clock-to-beaglebone-black/overview   
