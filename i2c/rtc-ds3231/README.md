@@ -3,15 +3,16 @@
     * used module is below.  
 ![Alt text] (zs-042.jpg)  
     
-##Device Tree
-I used i2c_2 interface on the BBB.
+##Device Tree  
+I used i2c_2 interface on the BBB.  
+![Alt text] (/adc/XC-4438_microphone/beaglebone-black-pinout.jpg)  
 
-	/* Pins 19 (SCL) and 20 (SDL) of connector P9 */
-	i2c2_pins: pinmux_i2c2_pins {
-		pinctrl-single,pins = <
-			0x178 (PIN_INPUT_PULLUP | MUX_MODE3)	/* uart1_ctsn.i2c2_sda */
-			0x17c (PIN_INPUT_PULLUP | MUX_MODE3)	/* uart1_rtsn.i2c2_scl */
-		>;
-	};
+/* Pins 19 (SCL) and 20 (SDL) of connector P9 */  
+i2c2_pins: pinmux_i2c2_pins {  
+    pinctrl-single,pins = <  
+      0x178 (PIN_INPUT_PULLUP | MUX_MODE3)	/* uart1_ctsn.i2c2_sda */  
+      0x17c (PIN_INPUT_PULLUP | MUX_MODE3)	/* uart1_rtsn.i2c2_scl */  
+    >;  
+};  
 
 
