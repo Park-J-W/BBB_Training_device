@@ -72,3 +72,5 @@ If not, add the following line to the ds1307_id table.
 ####good reference  
 1. [Adding a Real Time Clock to BeagleBone Black][Adding a Real Time Clock to BeagleBone Black link] : 
 [Adding a Real Time Clock to BeagleBone Black link]: https://learn.adafruit.com/adding-a-real-time-clock-to-beaglebone-black/overview   
+2. [Introduction to BeagleBone Black I2C with the CryptoCape Real-Time Clock][BeagleBone Black I2C with RTC link] : 
+[BeagleBone Black I2C with RTC link link]: https://github.com/cryptotronix/tutorials/blob/master/rtc/rtc.md
