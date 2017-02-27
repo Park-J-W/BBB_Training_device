@@ -1,0 +1,59 @@
+#
+# RTC class/drivers configuration
+#
+
+config RTC_LIB
+	bool
+
+menuconfig RTC_CLASS
+	bool "Real Time Clock"
+	default n
+	depends on !S390 && !UML
+	select RTC_LIB
+	help
+	  Generic RTC class support. If you say yes here, you will
+ 	  be allowed to plug one or more RTCs to your system. You will
+	  probably want to enable one or more of the interfaces below.
+
+if RTC_CLASS
+
+config RTC_DRV_AS3722
+	tristate "ams AS3722 RTC driver"
+	depends on MFD_AS3722
+	help
+	  If you say yes here you get support for the RTC of ams AS3722 PMIC
+	  chips.
+
+	  This driver can also be built as a module. If so, the module
+	  will be called rtc-as3722.
+
+config RTC_DRV_DS1307
+	tristate "Dallas/Maxim DS1307/37/38/39/40, ST M41T00, EPSON RX-8025"
+	help
+	  If you say yes here you get support for various compatible RTC
+	  chips (often with battery backup) connected with I2C. This driver
+	  should handle DS1307, DS1337, DS1338, DS1339, DS1340, ST M41T00,
+	  EPSON RX-8025 and probably other chips. In some cases the RTC
+	  must already have been initialized (by manufacturing or a
+	  bootloader).
+
+	  The first seven registers on these chips hold an RTC, and other
+	  registers may add features such as NVRAM, a trickle charger for
+	  the RTC/NVRAM backup power, and alarms. NVRAM is visible in
+	  sysfs, but other chip features may not be available.
+
+	  This driver can also be built as a module. If so, the module
+	  will be called rtc-ds1307.
+
+config RTC_DRV_DS1374
+	tristate "Dallas/Maxim DS1374"
+	depends on I2C
+	help
+	  If you say yes here you get support for Dallas Semiconductor
+	  DS1374 real-time clock chips. If an interrupt is associated
+	  with the device, the alarm functionality is supported.
+
+	  This driver can also be built as a module. If so, the module
+	  will be called rtc-ds1374.
+
+endif # RTC_CLASS

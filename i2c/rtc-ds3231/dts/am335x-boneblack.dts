@@ -1,0 +1,25 @@
+/*
+ * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+/dts-v1/;
+
+#include "am33xx.dtsi"
+#include "am335x-bone-common.dtsi"
+
+&i2c2 {
+	status = "okay";
+	clock-frequency = <100000>;
+	
+	pinctrl-0 = <&i2c2_pins>;
+	pinctrl-names = "default";
+		
+	ds3231: ds3231_rtc@68 {
+		compatible = "maxim,ds3231";
+		reg = <0x68>;
+	};	
+};
+

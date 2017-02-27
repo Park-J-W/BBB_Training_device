@@ -1,0 +1,17 @@
+/*
+ * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+	
+/*for use a ds3231 R.T.C device */
+/* Pins 19 (SCL) and 20 (SDL) of connector P9 */
+i2c2_pins: pinmux_i2c2_pins {
+	pinctrl-single,pins = <
+		0x178 (PIN_INPUT_PULLUP | MUX_MODE3)	/* uart1_ctsn.i2c2_sda */
+		0x17c (PIN_INPUT_PULLUP | MUX_MODE3)	/* uart1_rtsn.i2c2_scl */
+	>;
+};
+
