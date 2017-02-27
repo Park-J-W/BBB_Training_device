@@ -7,7 +7,7 @@
 I used i2c_2 interface on the BBB.  
 ![Alt text] (/adc/XC-4438_microphone/beaglebone-black-pinout.jpg)  
 
-1. add below code to the am335x-bone-common.dtsi :  
+1.add below code to the am335x-bone-common.dtsi :  
 
 	/* Pins 19 (SCL) and 20 (SDL) of connector P9 */
 	i2c2_pins: pinmux_i2c2_pins {
@@ -32,6 +32,9 @@ I used i2c_2 interface on the BBB.
 		};	
 	};  
 
+3. Device tree compile.
+4. $ dtc -I fs /proc/device-tree -> check device tree.
+4. i2cdetect -y -r 2 -> check i2c_2 device.
 
 ##3231 Driver.  
 Rtc-3231 driver file is in the driver/rtc/rtc-ds1307.c  
@@ -53,7 +56,9 @@ If not, add the following line to the ds1307_id table.
 3. save the configure.  
 4. save the configure, compile, download image and powerup device.
 
-
+###R.C.T setting and check.
+1. date
+2. 
 
 
 
