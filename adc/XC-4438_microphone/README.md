@@ -6,4 +6,7 @@ This is an microphone
 Link: [Google][googlelink]
 [googlelink]: https://google.com "Go google"
 
-[aduino XC-4438]: [https://www.jaycar.com.au/audio-matrix-spectrum]
+[aduino XC-4438][https://www.jaycar.com.au/audio-matrix-spectrum]
+
+[aduino XC-4438][id]
+[id]: "https://www.jaycar.com.au/audio-matrix-spectrum"
