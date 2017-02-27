@@ -1,0 +1,230 @@
+Linux Core ADC Users Guide
+(Redirected from Linux Core ADC User's Guide)
+
+Contents [hide] 
+1 Introduction
+2 Convert Analog voltage to Digital
+3 Accessing ADC Pins on TI EVMs
+3.1 AM335x EVM
+3.2 Beaglebone/Beaglebone Black
+4 Driver Configuration
+4.1 Building as Loadable Kernel Module
+5 Device Tree
+6 Usage
+6.1 Modes of operation
+6.1.1 One-shot Mode
+6.1.2 Continuous Mode
+6.1.2.1 Overview
+6.1.2.2 How to set it up
+6.1.2.3 Sample Application
+7 ADC Driver Limitations
+8 Archived
+Introduction
+An analog-to-digital converter (abbreviated ADC) is a device that uses sampling to convert a continuous quantity to a discrete time representation in digital form.
+
+The TSC_ADC_SS (Touchscreen_ADC_subsystem) is an 8 channel general purpose ADC, with optional support for interleaving Touch Screen conversions. The TSC_ADC_SS can be used and configured in one of the following application options:
+
+8 general purpose ADC channels
+4 wire TS, with 4 general purpose ADC channels
+5 wire TS, with 3 general purpose ADC channels
+ADC used is 12 bit SAR ADC with a sample rate of 200 KSPS (Kilo Samples Per Second). The ADC samples the analog signal when "start of conversion" signal is high and continues sampling 1 clock cycle after the falling edge. It captures the signal at the end of sampling period and starts conversion. It uses 12 clock cycles to digitize the sampled input; then an "end of conversion" signal is enabled high indicating that the digital data ADCOUT<11:0> is ready for SW to consume. A new conversion cycle can be initiated after the previous data is read. Please note that the ADC output is positive binary weighted data.
+
+
+Convert Analog voltage to Digital
+To cross verify the digital values read use,
+
+D = Vin * (2^n - 1) / Vref
+Where:
+D = Digital value
+Vin = Input voltage
+n = No of bits
+Vref = reference voltage
+Ex: Read value on channel AIN4 for input voltage supplied 1.01:
+
+Formula:
+
+D = 1.01 * (2^12 -1 )/ 1.8
+D = 2297.75
+Accessing ADC Pins on TI EVMs
+AM335x EVM
+On top of EVM, on LCD daughter board, J8 connector can be used, where ADC channel input AIN0-AN7 pins are brought out. For further information of J8 connector layout please refer to EVM schematics here
+
+Beaglebone/Beaglebone Black
+On BeagleBone platform, P9 expansion header can be used. For further information on expansion header layout please refer to the Beaglebone schematics here
+
+
+Driver Configuration
+You can enable ADC driver in the kernel as follows.
+
+Device Drivers  --->
+         [*]  Industrial I/O support  --->
+                  [*]  Enable buffer support within IIO
+                  <*>     Industrial I/O lock free software ring
+                       Analog to digital converters  --->
+                               <*> TI's AM335X ADC driver
+Should the entry "TI's AM335X ADC driver" be missing the MFD component --->
+
+Device Drivers  --->
+	Multifunction device drivers  --->
+		<M> TI ADC / Touch Screen chip support
+Building as Loadable Kernel Module
+In-case if you want to build the driver as module, use <M> instead of <*> during menuconfig while selecting the drivers (as shown below). For more information on loadable modules refer Loadable Module HOWTO
+Device Drivers  --->
+         [M]  Industrial I/O support  --->
+                  [*]  Enable buffer support within IIO
+                  <*>     Industrial I/O lock free software ring
+                       Analog to digital converters  --->
+                               <M> TI's AM335X ADC driver
+This step applies if the driver is built as module
+Do "make modules" to build the ADC driver as module. The module should be present in "drivers/iio/adc/ti_am335x_adc.ko".
+Load the driver using "ti_am335x_adc.ko".
+Device Tree
+ADC device tree data is added in file(arch/arm/boot/dts/am335x-evm.dts) as shown below.
+
+&tscadc {
+        adc {
+                ti,adc-channels = <4 5 6 7>;
+        };
+};
+
+The parameter "ti,adc-channels" needs to hold data related to which channels you want to use for ADC.
+
+This example is using channels AIN4, AIN5, AIN6, and AIN7 are used by ADC. The remaining channels (0 to 3) are used by TSC.
+You can find the source code for ADC [here](http://git.ti.com/ti-linux-kernel/ti-linux-kernel/blobs/ti-linux-3.14.y/drivers/iio/adc/ti_am335x_adc.c).
+
+Usage
+To test ADC, Connect a DC voltage supply to each of the AIN0 through AIN7 pins (based on your channel configuration), and vary voltage between 0 and 1.8v reference voltage.
+
+CAUTION Make sure that the voltage supplied does not cross 1.8v
+On loading the module you would see the IIO device created
+
+root@arago-armv7:~# ls -al /sys/bus/iio/devices/iio\:device0/
+total 0
+drwxr-xr-x 3 root root    0 Dec 19 13:35 .
+drwxr-xr-x 4 root root    0 Dec 19 13:35 ..
+-r--r--r-- 1 root root 4096 Dec 19 13:35 dev
+-rw-r--r-- 1 root root 4096 Dec 19 13:35 in_voltage4_raw
+-rw-r--r-- 1 root root 4096 Dec 19 13:35 in_voltage5_raw
+-rw-r--r-- 1 root root 4096 Dec 19 13:35 in_voltage6_raw
+-rw-r--r-- 1 root root 4096 Dec 19 13:35 in_voltage7_raw
+-r--r--r-- 1 root root 4096 Dec 19 13:35 name
+drwxr-xr-x 2 root root    0 Dec 19 13:35 power
+lrwxrwxrwx 1 root root    0 Dec 19 13:35 subsystem -> ../../../../../bus/iio
+-rw-r--r-- 1 root root 4096 Dec 19 13:35 uevent
+root@arago-armv7:~#
+Modes of operation
+When the ADC sequencer finishes cycling through all the enabled channels, the user can decide if the sequencer should stop (one-shot mode), or loop back and schedule again (continuous mode). If one-shot mode is enabled, then the sequencer will only be scheduled one time (the sequencer HW will automatically disable the StepEnable bit after it is scheduled which will guarantee only one sample is taken per channel). When the user wants to continuously take samples, continuous mode needs to be enabled. One cannot read ADC data from one channel operating in One-shot mode and and other in continuous mode at the same time.
+
+One-shot Mode
+To read a single ADC output from a particular channel this interface can be used.
+
+root@arago-armv7:~# cat /sys/bus/iio/devices/iio\:device0/in_voltage4_raw
+645
+This feature is exposed by IIO through the following files:
+
+in_voltageX_raw: raw value of the channel X of the ADC
+Continuous Mode
+Overview
+Important folders in the iio:deviceX directory are:
+
+Buffer
+bytes_per_datum:
+enabled: get and set the state of the buffer
+length: get and set the length of the buffer.
+The buffer directory contains 3 files:
+
+root@arago-armv7:~# ls -al /sys/bus/iio/devices/iio\:device0/buffer/
+drwxr-xr-x    2 root     root            0 Jan  1 00:00 .
+drwxr-xr-x    5 root     root            0 Jan  1 00:00 ..
+-rw-r--r--    1 root     root         4096 Jan  1 00:01 bytes_per_datum
+-rw-r--r--    1 root     root         4096 Jan  1 00:01 enable
+-rw-r--r--    1 root     root         4096 Jan  1 00:01 length
+Scan_elements directory contains interfaces for elements that will be captured for a single sample set in the buffer.
+root@arago-armv7:~# ls -al /sys/bus/iio/devices/iio\:device0/scan_elements/
+drwxr-xr-x    2 root     root            0 Jan  1 00:00 .
+drwxr-xr-x    5 root     root            0 Jan  1 00:00 ..
+-rw-r--r--    1 root     root         4096 Jan  1 00:02 in_voltage0_en
+-r--r--r--    1 root     root         4096 Jan  1 00:02 in_voltage0_index
+-r--r--r--    1 root     root         4096 Jan  1 00:02 in_voltage0_type
+-rw-r--r--    1 root     root         4096 Jan  1 00:02 in_voltage1_en
+-r--r--r--    1 root     root         4096 Jan  1 00:02 in_voltage1_index
+-r--r--r--    1 root     root         4096 Jan  1 00:02 in_voltage1_type
+-rw-r--r--    1 root     root         4096 Jan  1 00:02 in_voltage2_en
+-r--r--r--    1 root     root         4096 Jan  1 00:02 in_voltage2_index
+-r--r--r--    1 root     root         4096 Jan  1 00:02 in_voltage2_type
+-rw-r--r--    1 root     root         4096 Jan  1 00:02 in_voltage3_en
+-r--r--r--    1 root     root         4096 Jan  1 00:02 in_voltage3_index
+-r--r--r--    1 root     root         4096 Jan  1 00:02 in_voltage3_type
+-rw-r--r--    1 root     root         4096 Jan  1 00:02 in_voltage4_en
+-r--r--r--    1 root     root         4096 Jan  1 00:02 in_voltage4_index
+-r--r--r--    1 root     root         4096 Jan  1 00:02 in_voltage4_type
+-rw-r--r--    1 root     root         4096 Jan  1 00:02 in_voltage5_en
+-r--r--r--    1 root     root         4096 Jan  1 00:02 in_voltage5_index
+-r--r--r--    1 root     root         4096 Jan  1 00:02 in_voltage5_type
+-rw-r--r--    1 root     root         4096 Jan  1 00:02 in_voltage6_en
+-r--r--r--    1 root     root         4096 Jan  1 00:02 in_voltage6_index
+-r--r--r--    1 root     root         4096 Jan  1 00:02 in_voltage6_type
+-rw-r--r--    1 root     root         4096 Jan  1 00:02 in_voltage7_en
+-r--r--r--    1 root     root         4096 Jan  1 00:02 in_voltage7_index
+-r--r--r--    1 root     root         4096 Jan  1 00:02 in_voltage7_type
+root@arago-armv7:~#
+Scan_elements exposes 3 files per channel:
+
+in_voltageX_en: is this channel enabled?
+in_voltageX_index: index of this channel in the buffer's chunks
+in_voltageX_type : How the ADC stores its data. Reading this file should return you a string something like below:
+root@arago-armv7:~# cat /sys/bus/iio/devices/iio\:device0/scan_elements/in_voltage1_type
+le:u12/32>>0
+Where:
+
+le represents the endianness, here little endian
+u is the sign of the value returned. It could be either u (for unsigned) or s (for signed)
+12 is the number of relevant bits of information
+32 is the actual number of bits used to store the datum
+0 is the number of right shifts needed.
+
+How to set it up
+To read ADC data continuously we need to enable buffer and channels to be used.
+
+Set up the channels in use (you can enable any combination of the channels you want)
+
+root@arago-armv7:~# echo 1 > /sys/bus/iio/devices/iio\:device0/scan_elements/in_voltage0_en
+root@arago-armv7:~# echo 1 > /sys/bus/iio/devices/iio\:device0/scan_elements/in_voltage5_en
+root@arago-armv7:~# echo 1 > /sys/bus/iio/devices/iio\:device0/scan_elements/in_voltage7_en
+Set up the buffer length
+
+root@arago-armv7:~# echo 100 > /sys/bus/iio/devices/iio\:device0/buffer/length
+Enable the capture
+
+root@arago-armv7:~# echo 1 > /sys/bus/iio/devices/iio\:device0/buffer/enable
+Now, all the captures are exposed in the character device /dev/iio:device0 
+To stop the capture, just disable the buffer
+
+root@arago-armv7:~# echo 0 > /sys/bus/iio/devices/iio\:device0/buffer/enable
+Sample Application
+The source code is located under kernel sources "drivers/staging/iio/Documentation/generic_buffer.c". To test ADC continuous mode without hardware trigger we need to modify this application to bypass the trigger detection. Please apply patch Media:Generic_buff.patch on top of the application generic_buffer.c in order to bypass the trigger conditions.
+
+How to compile:
+
+arm-arago-linux-gnueabi-gcc --static generic_buffer.c -o generic_buffer
+or
+
+<path_to_cross-compiler/cross-compiler-prefix->-gcc --static generic_buffer.c -o generic_buffer
+Then copy the generic_buffer program on your target board and follow below sequence -
+
+Enable the channels:
+
+root@arago-armv7:~# echo 1 > /sys/bus/iio/devices/iio\:device0/scan_elements/in_voltage4_en
+Finally, the generic_buffer application does all the "enable" and "disable" actions for you. You will only need to specify the IIO driver. Application takes two arguments, buffer length to use (256 in this example) the default value is 128 and the number of iterations you want to run (3 in this example). By just enabling the buffer ADC switches to continuous mode.
+
+root@arago-armv7:~# ./generic_buffer -n TI-am335x-adc -l 256 -c 3
+The output of this application is directly printed on console. 
+To go back to oneshot mode disable the buffer:
+
+root@arago-armv7:~# echo 0 > /sys/bus/iio/devices/iio\:device0/buffer/enable
+This brings back ADC to oneshot mode
+
+ADC Driver Limitations
+This driver is based on the IIO (Industrial I/O subsystem), however this driver has limited functionality:
+
+"Out of Range" not supported by ADC driver.
