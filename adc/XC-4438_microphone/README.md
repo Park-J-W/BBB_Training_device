@@ -9,4 +9,4 @@ Link: [Google][googlelink]
 [aduino XC-4438][https://www.jaycar.com.au/audio-matrix-spectrum]
 
 [aduino XC-4438][id]
-[id]: "https://www.jaycar.com.au/audio-matrix-spectrum"
+[id]: URL "https://www.jaycar.com.au/audio-matrix-spectrum"
