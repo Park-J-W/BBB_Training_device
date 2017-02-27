@@ -7,7 +7,7 @@
 I used i2c_2 interface on the BBB.  
 ![Alt text] (/adc/XC-4438_microphone/beaglebone-black-pinout.jpg)  
 
-1.add below code to the am335x-bone-common.dtsi :  
+1. add below code to the am335x-bone-common.dtsi :  
 
 	/* Pins 19 (SCL) and 20 (SDL) of connector P9 */
 	i2c2_pins: pinmux_i2c2_pins {
