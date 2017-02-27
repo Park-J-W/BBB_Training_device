@@ -22,6 +22,8 @@ Reference to
 
 ####Connections:
 
+![Alt text] (beaglebone-black-pinout.jpg)  
+
 BBB : P9_01 -> GND : XC-4438 (G	Ground)  
 BBB : P9_03 -> +   : XC-4438 (Power)  
 BBB : P9_36 -> A0  : XC-4438 (Sound Signal from Microphone)  
