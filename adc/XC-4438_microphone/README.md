@@ -11,7 +11,7 @@ Reference to
 3. [Analysis XC-4438](http://www.axino-tech.co.nz/documents/duinotech%20microphone%20sound%20detector.html)
 
 
-![BBB IO Pinmap] (XC-4438.jpg)
+![BBB IO Pinmap](XC-4438.jpg)
   
   
   
@@ -19,7 +19,7 @@ Reference to
 
 #### Connections:
 
-![Alt text](beaglebone-black-pinout.jpg)  
+![BBB IO Pinmap](beaglebone-black-pinout.jpg)  
 
 BBB : P9_01 -> GND : XC-4438 (G	Ground)  
 BBB : P9_03 -> +   : XC-4438 (Power)  
