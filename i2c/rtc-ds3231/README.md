@@ -37,8 +37,7 @@ I used i2c_2 interface on the BBB.
 4. i2cdetect -y -r 2 -> check i2c_2 device.
 
 #### good reference  
-1. [blog.fraggod.net][blog.fraggod.net link] : 
-[blog.fraggod.net link]: http://blog.fraggod.net/2015/11/25/replacing-built-in-rtc-with-i2c-battery-backed-one-on-beaglebone-black-from-boot.html
+1. [blog.fraggod.net](http://blog.fraggod.net/2015/11/25/replacing-built-in-rtc-with-i2c-battery-backed-one-on-beaglebone-black-from-boot.html)
 
 ## ds3231 Driver.  
 Rtc-3231 driver file is in the driver/rtc/rtc-ds1307.c  
