@@ -3,7 +3,7 @@
     * used module is below.  
 ![Alt text] (zs-042.jpg)  
     
-##Device Tree.  
+## Device Tree.  
 I used i2c_2 interface on the BBB.  
 ![Alt text] (/adc/XC-4438_microphone/beaglebone-black-pinout.jpg)  
 
@@ -36,17 +36,17 @@ I used i2c_2 interface on the BBB.
 4. $ dtc -I fs /proc/device-tree -> check device tree.
 4. i2cdetect -y -r 2 -> check i2c_2 device.
 
-####good reference  
+#### good reference  
 1. [blog.fraggod.net][blog.fraggod.net link] : 
 [blog.fraggod.net link]: http://blog.fraggod.net/2015/11/25/replacing-built-in-rtc-with-i2c-battery-backed-one-on-beaglebone-black-from-boot.html
 
-##ds3231 Driver.  
+## ds3231 Driver.  
 Rtc-3231 driver file is in the driver/rtc/rtc-ds1307.c  
 Find the id of ds3231 on the driver file. If found that, don't need to modify or add code.  
 If not, add the following line to the ds1307_id table.  
 { "ds3231", ds_3231 },  
 
-###Built-in kernel the driver.  
+### Built-in kernel the driver.  
 1. make ARCH=arm menuconfig  
 2. enter the Search Configuration Parameter by typing '/'.  
 3. search the Real Time Clock by inputing the RTC_DRV_DS1307 on the search box.  
@@ -54,13 +54,13 @@ If not, add the following line to the ds1307_id table.
 5. and then, hit the space bar until the represents to "*".  
 6. save the configure, compile, download image and powerup device.  
   
-###Module load.  
+### Module load.  
 1. run the above 1~4.  
 2. and then, hit the space bar until the represents to "M".  
 3. save the configure.  
 4. save the configure, compile, download image and powerup device.  
 
-###R.C.T setting and check.  
+### R.C.T setting and check.  
 1. date  
 2. rdate -s {tiem server} (i.e time.bora.net ) -> it will set the OS time as the received time from time server.  
 3. check the time by using date command.  
@@ -69,7 +69,7 @@ If not, add the following line to the ds1307_id table.
 5. reboot  
 6. check the RTC time by using hwclock command.  
 
-####good reference  
+#### good reference  
 1. [Adding a Real Time Clock to BeagleBone Black][Adding a Real Time Clock to BeagleBone Black link] : 
 [Adding a Real Time Clock to BeagleBone Black link]: https://learn.adafruit.com/adding-a-real-time-clock-to-beaglebone-black/overview   
 2. [Introduction to BeagleBone Black I2C with the CryptoCape Real-Time Clock][BeagleBone Black I2C with RTC link] : 
