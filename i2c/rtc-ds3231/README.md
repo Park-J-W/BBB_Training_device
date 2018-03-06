@@ -37,7 +37,7 @@ I used i2c_2 interface on the BBB.
 4. i2cdetect -y -r 2 -> check i2c_2 device.
 
 #### good reference  
-1. [blog.fraggod.net](http://blog.fraggod.net/2015/11/25/replacing-built-in-rtc-with-i2c-battery-backed-one-on-beaglebone-black-from-boot.html)
+1. [Replacing built-in RTC with i2c battery-backed one on BeagleBone Black from boot](http://blog.fraggod.net/2015/11/25/replacing-built-in-rtc-with-i2c-battery-backed-one-on-beaglebone-black-from-boot.html)
 
 ## ds3231 Driver.  
 Rtc-3231 driver file is in the driver/rtc/rtc-ds1307.c  
@@ -69,7 +69,5 @@ If not, add the following line to the ds1307_id table.
 6. check the RTC time by using hwclock command.  
 
 #### good reference  
-1. [Adding a Real Time Clock to BeagleBone Black][Adding a Real Time Clock to BeagleBone Black link] : 
-[Adding a Real Time Clock to BeagleBone Black link]: https://learn.adafruit.com/adding-a-real-time-clock-to-beaglebone-black/overview   
-2. [Introduction to BeagleBone Black I2C with the CryptoCape Real-Time Clock][BeagleBone Black I2C with RTC link] : 
-[BeagleBone Black I2C with RTC link]: https://github.com/cryptotronix/tutorials/blob/master/rtc/rtc.md
+1. [Adding a Real Time Clock to BeagleBone Black](https://learn.adafruit.com/adding-a-real-time-clock-to-beaglebone-black/overview)
+2. [Introduction to BeagleBone Black I2C with the CryptoCape Real-Time Clock](https://github.com/cryptotronix/tutorials/blob/master/rtc/rtc.md)
