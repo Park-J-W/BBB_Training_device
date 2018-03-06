@@ -5,7 +5,7 @@
     
 ## Device Tree.  
 I used i2c_2 interface on the BBB.  
-![Alt text] (/adc/XC-4438_microphone/beaglebone-black-pinout.jpg)  
+![Alt text](/adc/XC-4438_microphone/beaglebone-black-pinout.jpg)  
 
 1.add below code to the am335x-bone-common.dtsi :  
 
